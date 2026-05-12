@@ -9,11 +9,13 @@ def run_single_trajectory(traj_id, N, p, sigma,  theta_true,
 
     seed = int(base_seed) + int(traj_id)
     rng = np.random.default_rng(seed)
+    
+    a = np.array([1, 1, 1, 1, 1])/np.sqrt(5)  # диагональ для Ф
 
 
     X = rng.uniform(low=uniform_low, high=uniform_high, size=(N, p))
     noise = rng.normal(0.0, sigma, size=N)
-    y = X.dot(theta_true) + noise  
+    y = X.dot(theta_true) + (noise*(X.dot(a)))  
 
     
     theta_hat = np.zeros(p, dtype=float)    
@@ -39,7 +41,7 @@ def run_single_trajectory(traj_id, N, p, sigma,  theta_true,
         theta_hat_history[n] = theta_hat.copy()
 
 
-    return traj_id, theta_hat_history[999::10000]
+    return traj_id, theta_hat_history[999::1000]
 
 def run_batch_trajectories(batch_ids, N, p, sigma, theta_true,
                            uniform_low, uniform_high,
@@ -69,7 +71,7 @@ def run_all_trajectories(n_trajectories=1024,
     q = p // 2
     theta_true = np.concatenate([mu * np.ones(q), -(mu/10) * np.ones(p - q)])
 
-    theta_hat_histories = np.zeros((n_trajectories, (N + 1)//10000, p), dtype=float)
+    theta_hat_histories = np.zeros((n_trajectories, (N + 1)//1000, p), dtype=float)
 
     batch_ids_list = [list(range(i, min(i + batch_size, n_trajectories)))
                       for i in range(0, n_trajectories, batch_size)]

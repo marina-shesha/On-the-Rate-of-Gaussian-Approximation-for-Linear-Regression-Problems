@@ -6,7 +6,7 @@ if __name__ == "__main__":
     for a in alphas:
         OUT = run_all_trajectories(
             n_trajectories=1024,
-            N=2000000,
+            N=200000,
             p=5,
             sigma=0.02,
             uniform_low=-np.sqrt(3),
@@ -14,7 +14,7 @@ if __name__ == "__main__":
             base_seed=12345,
             alpha = a,
             num_workers=8,
-            batch_size=4,
-            out_path=f"sgd_1024_trajs_linreg_2000000_alpha_{a}_thetas.npz"
+            batch_size=32,
+            out_path=f"sgd_1024_trajs_linreg_200000_alpha_{a}_thetas_new.npz"
         )
         print("Saved to", OUT)
